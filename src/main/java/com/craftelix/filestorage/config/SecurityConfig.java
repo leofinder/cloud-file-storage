@@ -2,8 +2,8 @@ package com.craftelix.filestorage.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -14,8 +14,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize
+                .csrf(Customizer.withDefaults())
+                .authorizeHttpRequests(requests -> requests
                         .requestMatchers(
                                 "/css/**",
                                 "/js/**",
@@ -31,7 +31,7 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/signout")
-                        .logoutSuccessUrl("/signin")
+                        .logoutSuccessUrl("/signin?signout")
                         .permitAll()
                 );
 
