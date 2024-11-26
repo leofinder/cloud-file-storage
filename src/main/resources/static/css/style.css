@@ -84,4 +84,73 @@
     white-space: pre-line;
 }
 
+.breadcrumb {
+    background: none;
+}
 
+.table-container {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.table-container .table {
+    margin-bottom: 0;
+    border-collapse: collapse; /* Убираем дублирование границ */
+
+}
+
+.table-container thead th {
+    font-weight: normal;
+    color: #495057;
+}
+
+.table-container tbody td a {
+    text-decoration: none;
+    font-weight: normal;
+    color: #495057;
+    transition: color 0.2s ease-in-out;
+}
+
+.table-container tbody td a:hover {
+    color: #0d6efd;
+    text-decoration: underline;
+}
+
+
+.table-container tbody tr:last-child {
+    border-bottom: 0;
+    /* Полностью убираем нижнюю границу */
+}
+
+/* Обеспечиваем равномерные границы у всех строк */
+.table-container tbody tr {
+    border-bottom: 1px solid #dee2e6;
+    /* Тонкая граница для всех строк */
+}
+
+.icon-folder {
+    margin-right: 10px;
+    color: #ffc107;
+    font-size: 1.5rem;
+    /* Увеличенный размер иконки */
+
+}
+
+.icon-file {
+    margin-right: 10px;
+    color: #6c757d;
+    font-size: 1.5rem;
+    /* Увеличенный размер иконки */
+}
+
+.icon-action {
+    color: #6c757d;
+    font-size: 1.0rem;
+    cursor: pointer;
+}
+
+.icon-action:hover {
+    color: #ffc107;
+}
