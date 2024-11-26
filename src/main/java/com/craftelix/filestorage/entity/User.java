@@ -3,7 +3,6 @@ package com.craftelix.filestorage.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -25,11 +24,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
-    )
-    private Set<Role> roles = new HashSet<>();
+    @Column(name = "role")
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "users_roles")
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 }

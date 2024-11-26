@@ -3,7 +3,6 @@ package com.craftelix.filestorage.service;
 import com.craftelix.filestorage.dto.user.UserSignupDto;
 import com.craftelix.filestorage.entity.Role;
 import com.craftelix.filestorage.entity.User;
-import com.craftelix.filestorage.entity.UserRole;
 import com.craftelix.filestorage.exception.UserAlreadyExistException;
 import com.craftelix.filestorage.mapper.UserMapper;
 import com.craftelix.filestorage.repository.UserRepository;
@@ -30,8 +29,6 @@ public class UserService implements UserDetailsService {
 
     private final UserMapper userMapper;
 
-    private final RoleService roleService;
-
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -48,17 +45,15 @@ public class UserService implements UserDetailsService {
 
     private Collection<? extends GrantedAuthority> getAuthorities(Set<Role> roles) {
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toSet());
     }
 
     @Transactional
     public void save(UserSignupDto userSignupDto) {
-        Role role = roleService.findByName(UserRole.USER.getRoleName());
-
         User user = userMapper.toEntity(userSignupDto);
         user.setPassword(passwordEncoder.encode(userSignupDto.getPassword()));
-        user.setRoles(Collections.singleton(role));
+        user.setRoles(Collections.singleton(Role.ROLE_USER));
         try {
             userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
