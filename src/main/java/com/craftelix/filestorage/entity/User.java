@@ -3,6 +3,7 @@ package com.craftelix.filestorage.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -29,4 +30,8 @@ public class User {
     @CollectionTable(name = "users_roles")
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<DataInfo> dataInfos;
 }

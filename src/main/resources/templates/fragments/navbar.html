@@ -2,26 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <body>
 
-<nav th:fragment="navbar" class="navbar navbar-expand-lg bg-light fixed-top">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/}">uCloud</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item">
-                    <a class="nav-link">
-                        <span sec:authentication="name">Username</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <form th:action="@{/signout}" method="POST" class="nav-link logout-btn">
-                        <button type="submit" class="fas fa-sign-out-alt">Sign out</button>
-                    </form>
-                </li>
-            </ul>
+        <div class="d-flex align-items-center">
+            <span class="navbar-text me-3" sec:authentication="name">Username</span>
+            <form th:action="@{/signout}" method="post">
+                <button class="btn btn-outline-secondary btn-sm" type="submit">Sign out</button>
+            </form>
         </div>
     </div>
 </nav>

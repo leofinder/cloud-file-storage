@@ -3,7 +3,7 @@ spring:
     name: cloud-file-storage
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:cloud_file_storage}?currentSchema=auth
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:cloud_file_storage}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:postgres}
   jpa:
@@ -11,7 +11,24 @@ spring:
       show_sql: true
       format_sql: true
       hbm2ddl.auto: validate
+#      dialect: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled: true
+
+logging:
+  level:
+#    root: "WARN"
+    org.springframework: "INFO"
+    org.hibernate: "ERROR"
+    com.craftelix: "DEBUG"
 
 minio:
   url: ${MINIO_HOST:http://localhost}:${MINIO_PORT_API:9000}

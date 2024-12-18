@@ -4,6 +4,7 @@ import com.craftelix.filestorage.dto.user.UserSignupDto;
 import com.craftelix.filestorage.entity.Role;
 import com.craftelix.filestorage.entity.User;
 import com.craftelix.filestorage.exception.UserAlreadyExistException;
+import com.craftelix.filestorage.exception.UserNotFoundException;
 import com.craftelix.filestorage.mapper.UserMapper;
 import com.craftelix.filestorage.repository.UserRepository;
 import com.craftelix.filestorage.security.CustomUserDetails;
@@ -36,7 +37,6 @@ public class UserService implements UserDetailsService {
         return new CustomUserDetails(user);
     }
 
-    @Transactional
     public void save(UserSignupDto userSignupDto) {
         User user = userMapper.toEntity(userSignupDto);
         user.setPassword(passwordEncoder.encode(userSignupDto.getPassword()));
@@ -48,4 +48,10 @@ public class UserService implements UserDetailsService {
             throw new UserAlreadyExistException(String.format("User %s already exists", userSignupDto.getUsername()), e);
         }
     }
+
+    public User findByUserId(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(String.format("User %s not found", userId)));
+    }
+
 }

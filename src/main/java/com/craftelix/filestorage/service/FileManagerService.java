@@ -1,0 +1,115 @@
+package com.craftelix.filestorage.service;
+
+import com.craftelix.filestorage.dto.DataInfoDto;
+import com.craftelix.filestorage.dto.DataRenameRequestDto;
+import com.craftelix.filestorage.dto.DataRequestDto;
+import com.craftelix.filestorage.dto.DataStreamResponseDto;
+import com.craftelix.filestorage.exception.PathNotFoundException;
+import com.craftelix.filestorage.util.PathUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+@Service
+@RequiredArgsConstructor
+public class FileManagerService {
+
+    private final MinioService minioService;
+
+    private final DataInfoService dataInfoService;
+
+    public void createFolder(DataRequestDto dataRequestDto, Long userId) {
+        validateParentPath(dataRequestDto.getParentPath(), userId);
+
+        String path = PathUtil.getFullPath(dataRequestDto.getParentPath(), dataRequestDto.getName(), true);
+        String minioPath = PathUtil.getMinioPath(path, userId);
+
+        minioService.createFolder(minioPath);
+
+        DataInfoDto dataInfoDto = new DataInfoDto(dataRequestDto.getName(), dataRequestDto.getParentPath(), true, null);
+
+        dataInfoService.saveMetadata(dataInfoDto, userId);
+    }
+
+    public void uploadFiles(MultipartFile[] files, String parentPath, Long userId) {
+        validateParentPath(parentPath, userId);
+
+        for (MultipartFile file : files) {
+            String filename = file.getOriginalFilename();
+            String path = PathUtil.getFullPath(parentPath, filename, false);
+            String minioPath = PathUtil.getMinioPath(path, userId);
+
+            minioService.uploadFile(minioPath, file);
+
+            DataInfoDto dataInfoDto = new DataInfoDto(PathUtil.getFilename(path), PathUtil.getParentPath(path), false, file.getSize());
+
+            dataInfoService.saveMetadataWithIntermediateFolders(dataInfoDto, userId);
+
+        }
+    }
+
+    public void rename(DataRenameRequestDto dataRenameRequestDto, Long userId) {
+        validateParentPath(dataRenameRequestDto.getParentPath(), userId);
+
+        String oldPath = PathUtil.getFullPath(dataRenameRequestDto.getParentPath(), dataRenameRequestDto.getName(), dataRenameRequestDto.getIsFolder());
+        String newPath = PathUtil.getFullPath(dataRenameRequestDto.getParentPath(), dataRenameRequestDto.getNewName(), dataRenameRequestDto.getIsFolder());
+
+        String minioOldPath = PathUtil.getMinioPath(oldPath, userId);
+        String minioNewPath = PathUtil.getMinioPath(newPath, userId);
+
+        if (dataRenameRequestDto.getIsFolder()) {
+            minioService.renameFolder(minioOldPath, minioNewPath);
+        } else {
+            minioService.renameFile(minioOldPath, minioNewPath);
+        }
+
+        dataInfoService.updateMetadata(oldPath, newPath, dataRenameRequestDto.getNewName(), userId);
+    }
+
+    public void delete(DataRequestDto dataRequestDto, Long userId) {
+        validateParentPath(dataRequestDto.getParentPath(), userId);
+
+        String path = PathUtil.getFullPath(dataRequestDto.getParentPath(), dataRequestDto.getName(), dataRequestDto.getIsFolder());
+        String minioPath = PathUtil.getMinioPath(path, userId);
+
+        if (dataRequestDto.getIsFolder()) {
+            minioService.deleteFolder(minioPath);
+        } else {
+            minioService.deleteFile(minioPath);
+        }
+
+        dataInfoService.deleteMetadata(path, userId);
+    }
+
+    public DataStreamResponseDto download(DataRequestDto dataRequestDto, Long userId) {
+        validateParentPath(dataRequestDto.getParentPath(), userId);
+
+        String filename = dataRequestDto.getName();
+        String path = PathUtil.getFullPath(dataRequestDto.getParentPath(), dataRequestDto.getName(), dataRequestDto.getIsFolder());
+        String minioPath = PathUtil.getMinioPath(path, userId);
+
+        DataStreamResponseDto dataStreamResponseDto = new DataStreamResponseDto();
+
+        if (dataRequestDto.getIsFolder()) {
+            dataStreamResponseDto.setFilename(filename + ".zip");
+            dataStreamResponseDto.setResource(minioService.getFolderAsZipStream(minioPath));
+        } else {
+            dataStreamResponseDto.setFilename(filename);
+            dataStreamResponseDto.setResource(minioService.getFileAsStream(minioPath));
+        }
+
+        return dataStreamResponseDto;
+    }
+
+    private void validateParentPath(String path, Long userId) {
+        String minioPath = PathUtil.getMinioPath(path, userId);
+        if (!path.equals("/") && !isMinioPathExists(minioPath)) {
+            throw new PathNotFoundException("The folder at path '" + path + "' was not found or is inaccessible for the user with ID " + userId + ".");
+        }
+    }
+
+    private boolean isMinioPathExists(String path) {
+        return minioService.isObjectExist(path) || minioService.isPrefixExist(path);
+    }
+
+}

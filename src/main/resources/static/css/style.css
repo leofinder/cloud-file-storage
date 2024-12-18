@@ -1,77 +1,11 @@
-.navbar {
-    border-bottom: 1px solid #ddd;
-}
-
-.logout-btn {
-    color: #6c757d !important;
-    border: 1px solid #6c757d;
-    border-radius: 4px;
-    padding: 0.2rem 0.75rem !important;
-    margin-left: 10px;
-    transition: all 0.3s ease;
-    line-height: 1.2;
-}
-
-.logout-btn:hover {
-    background-color: #6c757d;
-    color: white !important;
-}
-
-.logo img {
-    width: 120px;
-    height: auto;
-    stroke-width: 3px;
-}
-
 .login-container,
 .registration-container {
     max-width: 500px;
+    position: relative;
 }
 
 .no-margin-bottom {
     margin-bottom: 0;
-}
-
-.container {
-    margin-top: 80px;
-}
-
-.search-wrapper {
-    max-width: 600px;
-    margin: 0 auto;
-    position: relative;
-}
-
-.search-input {
-    width: 100%;
-    padding: 12px 50px 12px 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    outline: none;
-    font-size: 16px;
-    transition: all 0.3s ease;
-}
-
-.search-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1);
-}
-
-.search-button {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: none;
-    background: transparent;
-    padding: 8px 15px;
-    color: #007bff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.search-button:hover {
-    color: #0056b3;
 }
 
 .error-wrapper {
@@ -80,77 +14,138 @@
     position: relative;
 }
 
-.preserve-whitespace {
-    white-space: pre-line;
+.custom-breadcrumb {
+    color: #6c7175;
 }
 
-.breadcrumb {
-    background: none;
-}
-
-.table-container {
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-top: 20px;
-}
-
-.table-container .table {
-    margin-bottom: 0;
-    border-collapse: collapse; /* Убираем дублирование границ */
-
-}
-
-.table-container thead th {
-    font-weight: normal;
-    color: #495057;
-}
-
-.table-container tbody td a {
+.custom-breadcrumb a {
+    color: #4b4d50;
     text-decoration: none;
-    font-weight: normal;
-    color: #495057;
-    transition: color 0.2s ease-in-out;
 }
 
-.table-container tbody td a:hover {
-    color: #0d6efd;
+.custom-breadcrumb a:hover {
     text-decoration: underline;
 }
 
 
-.table-container tbody tr:last-child {
-    border-bottom: 0;
-    /* Полностью убираем нижнюю границу */
+/*стили для кнопок*/
+.dropdown-item {
+    color: #333; /* Цвет текста по умолчанию */
 }
 
-/* Обеспечиваем равномерные границы у всех строк */
-.table-container tbody tr {
+.dropdown-item:hover,
+.dropdown-item:focus,
+.dropdown-item:active {
+    background-color: #e9ecef !important; /* Светло-серый фон */
+    color: #333 !important; /* Сохраняем текст темного цвета */
+}
+
+.dropdown-item i {
+    color: #6c757d; /* Цвет иконки */
+}
+
+/* Пользовательские стили для таблицы без вертикальных границ */
+.no-vertical-borders td,
+.no-vertical-borders th {
+    border-left: none !important;
+    border-right: none !important;
+}
+
+.no-vertical-borders th:first-child,
+.no-vertical-borders td:first-child {
+    border-left: 1px solid #dee2e6;
+}
+
+.no-vertical-borders th:last-child,
+.no-vertical-borders td:last-child {
+    border-right: 1px solid #dee2e6;
+}
+
+.no-vertical-borders tbody td {
     border-bottom: 1px solid #dee2e6;
-    /* Тонкая граница для всех строк */
 }
 
-.icon-folder {
-    margin-right: 10px;
-    color: #ffc107;
-    font-size: 1.5rem;
-    /* Увеличенный размер иконки */
-
+table tbody tr:last-child td {
+    border-bottom: none;
 }
 
-.icon-file {
-    margin-right: 10px;
-    color: #6c757d;
-    font-size: 1.5rem;
-    /* Увеличенный размер иконки */
+.no-vertical-borders {
+    /*border: 1px solid #dee2e6;*/
 }
 
-.icon-action {
-    color: #6c757d;
-    font-size: 1.0rem;
-    cursor: pointer;
+.folder-link {
+    color: inherit; /* Наследуем цвет текста родителя */
+    text-decoration: none; /* Убираем подчеркивание */
+    font-weight: inherit; /* Наследуем толщину текста */
 }
 
-.icon-action:hover {
-    color: #ffc107;
+.folder-link:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+    color: inherit; /* Цвет остаётся таким же, как у текста */
 }
+
+.icon-button {
+    padding: 0; /* Убирает внутренние отступы */
+    margin-right: 8px; /* Уменьшает отступ между кнопками */
+    /*line-height: 1; !* Устраняет дополнительные вертикальные отступы *!*/
+    border: none; /* Убирает рамки, если они есть */
+    background: none; /* Убирает фон */
+}
+
+.text-soft-edit {
+    color: #6c757d; /* Нейтральный серый цвет */
+}
+
+.text-soft-edit:hover {
+    color: #495057; /* Темнее при наведении */
+}
+
+/* Кнопка скачивания - мягкий синий */
+.text-soft-download {
+    color: #6c757d; /* Нейтральный серый цвет */
+}
+
+.text-soft-download:hover {
+    color: #495057; /* Темнее при наведении */
+}
+
+.text-soft-danger {
+    color: #6c757d; /* Нейтральный серый цвет */
+    /*color: #ff6b6b; !* Мягкий красный цвет *!*/
+}
+
+.text-soft-danger:hover {
+    color: #ff4c4c; /* Немного темнее при наведении */
+}
+
+/* Пример закруглённых углов */
+.rounded-table-container {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #dee2e6; /* Цвет рамки */
+    /*background-color: #dee2e6; !* Цвет углов *!*/
+}
+
+/*.table th:nth-child(2),*/
+/*.table td:nth-child(2) {*/
+/*    width: 100px; !* Ширина второй колонки *!*/
+/*}*/
+
+/*!* Третья колонка *!*/
+/*.table th:nth-child(3),*/
+/*.table td:nth-child(3) {*/
+/*    width: 150px; !* Ширина третьей колонки *!*/
+/*}*/
+
+@media (max-width: 576px) {
+    th.actions-col {
+        width: 30%;
+        /* Задайте нужный процент или фиксированный размер */
+    }
+}
+
+.preserve-whitespace {
+    white-space: pre-line;
+}
+
+
