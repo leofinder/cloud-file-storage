@@ -36,7 +36,7 @@ public class DataInfoService {
 
     public List<DataResponseDto> findByName(String name, Long userId) {
         Sort sort = Sort.by(Sort.Order.desc("isFolder"), Sort.Order.asc("name"));
-        List<DataInfo> dataInfos = dataInfoRepository.findByNameIgnoreCaseAndUserId(name, userId, sort);
+        List<DataInfo> dataInfos = dataInfoRepository.findByNameIgnoreCaseContainingAndUserId(name, userId, sort);
         return dataInfoMapper.toDto(dataInfos);
     }
 

@@ -15,7 +15,7 @@ public interface DataInfoRepository extends JpaRepository<DataInfo, Long> {
 
     List<DataInfo> findByParentPathAndUserId(String path, Long userId, Sort sort);
 
-    List<DataInfo> findByNameIgnoreCaseAndUserId(String name, Long userId, Sort sort);
+    List<DataInfo> findByNameIgnoreCaseContainingAndUserId(String name, Long userId, Sort sort);
 
     boolean existsByPathAndIsFolderAndUserId(String path, boolean isFolder, Long userId);
 

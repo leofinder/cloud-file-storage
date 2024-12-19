@@ -118,6 +118,15 @@ table tbody tr:last-child td {
     color: #ff4c4c; /* Немного темнее при наведении */
 }
 
+.text-soft-goto {
+    color: #6c757d;
+}
+
+.text-soft-goto:hover {
+    color: #495057;
+}
+
+
 /* Пример закруглённых углов */
 .rounded-table-container {
     border-radius: 8px;

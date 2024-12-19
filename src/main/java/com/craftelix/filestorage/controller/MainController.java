@@ -27,4 +27,14 @@ public class MainController {
         model.addAttribute("breadcrumbs", breadcrumbService.build(path));
         return "main";
     }
+
+    @GetMapping("/search/")
+    public String showSearchForm(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                 @RequestParam(name = "query") String name,
+                                 Model model) {
+
+        model.addAttribute("query", name);
+        model.addAttribute("searchInfoList", dataInfoService.findByName(name, userDetails.getId()));
+        return "search";
+    }
 }
