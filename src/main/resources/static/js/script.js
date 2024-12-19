@@ -34,3 +34,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteModal = document.getElementById('deleteModal');
+
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+
+        const name = button.getAttribute('data-name');
+        const parentPath = button.getAttribute('data-parent-path');
+        const isFolder = button.getAttribute('data-is-folder');
+
+        const modalNameInput = deleteModal.querySelector('input[name="name"]');
+        const modalParentPathInput = deleteModal.querySelector('input[name="parentPath"]');
+        const modalIsFolderInput = deleteModal.querySelector('input[name="isFolder"]');
+        const modalText = deleteModal.querySelector('strong');
+
+        if (modalNameInput) modalNameInput.value = name;
+        if (modalParentPathInput) modalParentPathInput.value = parentPath;
+        if (modalIsFolderInput) modalIsFolderInput.value = isFolder;
+        if (modalText) modalText.textContent = name || "this item";
+    });
+});
+
