@@ -4,6 +4,8 @@ import com.craftelix.filestorage.dto.DataInfoDto;
 import com.craftelix.filestorage.dto.DataRenameRequestDto;
 import com.craftelix.filestorage.dto.DataRequestDto;
 import com.craftelix.filestorage.dto.DataStreamResponseDto;
+import com.craftelix.filestorage.exception.MinioObjectAlreadyExistsException;
+import com.craftelix.filestorage.exception.MinioObjectNotFoundException;
 import com.craftelix.filestorage.exception.PathNotFoundException;
 import com.craftelix.filestorage.util.PathUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,8 @@ public class FileManagerService {
         String path = PathUtil.getFullPath(dataRequestDto.getParentPath(), dataRequestDto.getName(), true);
         String minioPath = PathUtil.getMinioPath(path, userId);
 
+        validateObjectNotExists(minioPath, dataRequestDto.getName(), dataRequestDto.getParentPath());
+
         minioService.createFolder(minioPath);
 
         DataInfoDto dataInfoDto = new DataInfoDto(dataRequestDto.getName(), dataRequestDto.getParentPath(), true, null);
@@ -38,6 +42,8 @@ public class FileManagerService {
             String filename = file.getOriginalFilename();
             String path = PathUtil.getFullPath(parentPath, filename, false);
             String minioPath = PathUtil.getMinioPath(path, userId);
+
+            validateObjectNotExists(minioPath, PathUtil.getFilename(path), PathUtil.getParentPath(path));
 
             minioService.uploadFile(minioPath, file);
 
@@ -57,6 +63,9 @@ public class FileManagerService {
         String minioOldPath = PathUtil.getMinioPath(oldPath, userId);
         String minioNewPath = PathUtil.getMinioPath(newPath, userId);
 
+        validateObjectExists(minioOldPath, dataRenameRequestDto.getName(), dataRenameRequestDto.getParentPath());
+        validateObjectNotExists(minioNewPath, dataRenameRequestDto.getNewName(), dataRenameRequestDto.getParentPath());
+
         if (dataRenameRequestDto.getIsFolder()) {
             minioService.renameFolder(minioOldPath, minioNewPath);
         } else {
@@ -71,6 +80,8 @@ public class FileManagerService {
 
         String path = PathUtil.getFullPath(dataRequestDto.getParentPath(), dataRequestDto.getName(), dataRequestDto.getIsFolder());
         String minioPath = PathUtil.getMinioPath(path, userId);
+
+        validateObjectExists(minioPath, dataRequestDto.getName(), dataRequestDto.getParentPath());
 
         if (dataRequestDto.getIsFolder()) {
             minioService.deleteFolder(minioPath);
@@ -87,6 +98,8 @@ public class FileManagerService {
         String filename = dataRequestDto.getName();
         String path = PathUtil.getFullPath(dataRequestDto.getParentPath(), dataRequestDto.getName(), dataRequestDto.getIsFolder());
         String minioPath = PathUtil.getMinioPath(path, userId);
+
+        validateObjectExists(minioPath, filename, dataRequestDto.getParentPath());
 
         DataStreamResponseDto dataStreamResponseDto = new DataStreamResponseDto();
 
@@ -105,6 +118,18 @@ public class FileManagerService {
         String minioPath = PathUtil.getMinioPath(path, userId);
         if (!path.equals("/") && !isMinioPathExists(minioPath)) {
             throw new PathNotFoundException("The folder at path '" + path + "' was not found or is inaccessible for the user with ID " + userId + ".");
+        }
+    }
+
+    private void validateObjectExists(String minioPath, String name, String parentPath) {
+        if (!isMinioPathExists(minioPath)) {
+            throw new MinioObjectNotFoundException("Object '" + name + "' not found at '" + parentPath + "'");
+        }
+    }
+
+    private void validateObjectNotExists(String minioPath, String name, String parentPath) {
+        if (isMinioPathExists(minioPath)) {
+            throw new MinioObjectAlreadyExistsException("Object '" + name + "' already exists at '" + parentPath + "'");
         }
     }
 

@@ -20,25 +20,27 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MinioObjectNotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleMinioObjectNotFoundException(MinioObjectNotFoundException ex) {
+    public String handleMinioObjectNotFoundException(MinioObjectNotFoundException ex, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         log.error(ex.getMessage(), ex);
-        return "/error/500";
+        redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/");
     }
 
     @ExceptionHandler(MinioObjectAlreadyExistsException.class)
     public String handleMinioObjectAlreadyExistsException(MinioObjectAlreadyExistsException ex, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         log.error(ex.getMessage(), ex);
-        redirectAttributes.addFlashAttribute("errorMessage", "Произошла ошибка: ");
+        redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/");
     }
 
     @ExceptionHandler(MinioServiceException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleMinioServiceException(MinioServiceException ex) {
-        log.error(ex.getMessage(), ex);
-        return "/error/500";
+    public String handleMinioServiceException(MinioServiceException ex, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        log.error("Minio Exception: {}", ex.getMessage(), ex);
+        redirectAttributes.addFlashAttribute("errorMessage", "An error occurred on the server. Please try again later.");
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/");
     }
 
     @ExceptionHandler(RuntimeException.class)

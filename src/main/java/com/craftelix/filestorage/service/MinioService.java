@@ -1,8 +1,6 @@
 package com.craftelix.filestorage.service;
 
 import com.craftelix.filestorage.exception.MinioServiceException;
-import com.craftelix.filestorage.exception.MinioObjectAlreadyExistsException;
-import com.craftelix.filestorage.exception.MinioObjectNotFoundException;
 import com.craftelix.filestorage.service.props.MinioProperties;
 import io.minio.*;
 import io.minio.messages.DeleteObject;
@@ -29,8 +27,6 @@ public class MinioService {
     private final MinioProperties minioProperties;
 
     public void createFolder(String path) {
-        validateObjectNotExists(path);
-
         try {
             putObject(path, new ByteArrayInputStream(new byte[0]), "application/x-directory");
         } catch (Exception e) {
@@ -39,9 +35,6 @@ public class MinioService {
     }
 
     public void renameFile(String oldObjectName, String newObjectName) {
-        validateObjectExists(oldObjectName);
-        validateObjectNotExists(newObjectName);
-
         try {
             copyObject(oldObjectName, newObjectName);
             removeObject(oldObjectName);
@@ -52,8 +45,6 @@ public class MinioService {
     }
 
     public void renameFolder(String oldPrefix, String newPrefix) {
-        validateObjectExists(oldPrefix);
-
         try {
             Iterable<Result<Item>> objects = getListObjects(oldPrefix);
 
@@ -61,8 +52,6 @@ public class MinioService {
                 Item item = result.get();
                 String oldObjectName = item.objectName();
                 String newObjectName = oldObjectName.replaceFirst(oldPrefix, newPrefix);
-
-                validateObjectNotExists(newObjectName);
 
                 copyObject(oldObjectName, newObjectName);
                 removeObject(oldObjectName);
@@ -74,8 +63,6 @@ public class MinioService {
     }
 
     public void deleteFile(String path) {
-        validateObjectExists(path);
-
         try {
             removeObject(path);
         } catch (Exception e) {
@@ -84,8 +71,6 @@ public class MinioService {
     }
 
     public void deleteFolder(String path) {
-        validateObjectExists(path);
-
         try {
             Iterable<Result<Item>> objects = getListObjects(path);
 
@@ -101,8 +86,6 @@ public class MinioService {
     }
 
     public void uploadFile(String path, MultipartFile file) {
-        validateObjectNotExists(path);
-
         try {
             putObject(path, file.getInputStream(), file.getContentType());
         } catch (Exception e) {
@@ -111,8 +94,6 @@ public class MinioService {
     }
 
     public InputStreamResource getFileAsStream(String path) {
-        validateObjectExists(path);
-
         try {
             return new InputStreamResource(getObject(path));
         } catch (Exception e) {
@@ -121,8 +102,6 @@ public class MinioService {
     }
 
     public InputStreamResource getFolderAsZipStream(String path) {
-        validateObjectExists(path);
-
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try (ZipOutputStream zos = new ZipOutputStream(byteArrayOutputStream)) {
             Iterable<Result<Item>> objects = getListObjects(path);
@@ -203,18 +182,6 @@ public class MinioService {
                         .objects(deleteObjects)
                         .build()
         );
-    }
-
-    private void validateObjectExists(String path) {
-        if (!isObjectExist(path) && !isPrefixExist(path)) {
-            throw new MinioObjectNotFoundException("Object not found in MinIO. Target path: " + path);
-        }
-    }
-
-    private void validateObjectNotExists(String path) {
-        if (isObjectExist(path) || isPrefixExist(path)) {
-            throw new MinioObjectAlreadyExistsException("Object already exists in MinIO. Target path: " + path);
-        }
     }
 
     public boolean isObjectExist(String objectName) {
