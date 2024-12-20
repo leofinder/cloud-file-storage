@@ -3,6 +3,7 @@ package com.craftelix.filestorage.service;
 import com.craftelix.filestorage.dto.DataInfoDto;
 import com.craftelix.filestorage.dto.DataResponseDto;
 import com.craftelix.filestorage.entity.DataInfo;
+import com.craftelix.filestorage.exception.DataInfoServiceException;
 import com.craftelix.filestorage.exception.PathNotFoundException;
 import com.craftelix.filestorage.mapper.DataInfoMapper;
 import com.craftelix.filestorage.repository.DataInfoRepository;
@@ -47,7 +48,7 @@ public class DataInfoService {
         try {
             dataInfoRepository.save(dataInfo);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw new DataInfoServiceException("Failed to save metadata for path: '" + dataInfoDto.getPath() + "' and userID: " + userId, e);
         }
     }
 
@@ -63,7 +64,8 @@ public class DataInfoService {
             dataInfoRepository.updateByPath(oldPath, newPath, newName, userId);
             dataInfoRepository.updateByParentPathPrefix(oldPath, newPath, userId);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw new DataInfoServiceException("Failed to update metadata for old-path: '" + oldPath + "', new-path: '" +
+                    newPath + "' and userID: " + userId, e);
         }
     }
 
@@ -71,7 +73,7 @@ public class DataInfoService {
         try {
             dataInfoRepository.deleteByPathPrefix(path, userId);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw new DataInfoServiceException("Failed to delete metadata for path: " + path + "' and userID: " + userId, e);
         }
     }
 

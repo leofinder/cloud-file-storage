@@ -43,6 +43,15 @@ public class GlobalExceptionHandler {
         return "redirect:" + (referer != null ? referer : "/");
     }
 
+    @ExceptionHandler(DataInfoServiceException.class)
+    public String handleDataInfoServiceException(DataInfoServiceException ex, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        log.error("Data Info Exception: {}", ex.getMessage(), ex);
+        String warningMessage = "The operation with files was successfully completed, but there was a problem updating metadata. Please contact support.";
+        redirectAttributes.addFlashAttribute("warningMessage", warningMessage);
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/");
+    }
+
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleRuntimeExceptions(RuntimeException ex) {
