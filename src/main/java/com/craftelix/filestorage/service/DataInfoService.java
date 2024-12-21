@@ -64,8 +64,8 @@ public class DataInfoService {
             dataInfoRepository.updateByPath(oldPath, newPath, newName, userId);
             dataInfoRepository.updateByParentPathPrefix(oldPath, newPath, userId);
         } catch (RuntimeException e) {
-            throw new DataInfoServiceException("Failed to update metadata for old-path: '" + oldPath + "', new-path: '" +
-                    newPath + "' and userID: " + userId, e);
+            throw new DataInfoServiceException("Failed to update metadata for old path: '" + oldPath + "', new path: '"
+                    + newPath + "' and userID: " + userId, e);
         }
     }
 
