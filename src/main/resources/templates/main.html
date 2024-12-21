@@ -122,30 +122,47 @@
 
 </main>
 
-<div th:if="${errors}" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
-    <div id="myToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <strong class="me-auto">Уведомление</strong>
-            <small>Только что</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
+<div th:if="${warningMessage}"
+     class="alert alert-warning alert-dismissible fade show slide-in"
+     role="alert"
+     style="position: fixed; bottom: 20px; right: 20px; z-index: 1050;">
+    <div class="d-flex gap-4">
+        <span><i class="fa-solid fa-circle-exclamation icon-warning"></i></span>
+        <div class="d-flex flex-column gap-1">
+            <h6 class="mb-0">Partial Service Failure</h6>
+            <p class="mb-0" th:text="${warningMessage}">warning</p>
         </div>
-        <div class="toast-body">
-            Это Toast уведомление поверх основного содержимого.
-        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 </div>
 
-<div th:if="${errors}" class="container">
-    <div class="row justify-content-center">
-        <div class="col-12 col-sm-8 col-md-6">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Информация!</strong> Это уведомление с адаптивной шириной.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
-                <ul>
-                    <li th:each="error : ${errors}" th:text="${error}"></li>
-                </ul>
-            </div>
+<div th:if="${errorMessage}"
+     class="alert alert-danger alert-dismissible fade show slide-in"
+     role="alert"
+     style="position: fixed; bottom: 20px; right: 20px; z-index: 1050;">
+    <div class="d-flex gap-4">
+        <span><i class="fa-solid fa-circle-exclamation icon-danger"></i></span>
+        <div class="d-flex flex-column gap-1">
+            <h6 class="mb-0">Operation Failed</h6>
+            <p class="mb-0" th:text="${errorMessage}">error</p>
         </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+
+<div th:if="${validationErrors}"
+     class="alert alert-danger alert-dismissible fade show slide-in"
+     role="alert"
+     style="position: fixed; bottom: 20px; right: 20px; z-index: 1050;">
+    <div class="d-flex gap-2 align-items-start">
+        <span><i class="fa-solid fa-circle-exclamation icon-danger"></i></span>
+        <div class="d-flex flex-column gap-1">
+            <h6 class="mb-0" th:text="${validationAlertTitle}"></h6>
+            <ul class="mb-0">
+                <li th:each="validationError : ${validationErrors}" th:text="${validationError}"></li>
+            </ul>
+        </div>
+        <button type="button" class="btn-close ms-3" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 </div>
 
@@ -153,21 +170,5 @@
 <!--<script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/js/all.min.js"></script>-->
 <script th:src="@{/js/script.js}"></script>
 <script th:src="@{/js/search.js}"></script>
-
-<script>
-
-    // setTimeout(function() {
-    //     const alertElement = document.getElementById('errorAlert');
-    //     if (alertElement) {
-    //         alertElement.style.display = 'none';
-    //     }
-    // }, 5000);
-    $(document).ready(function() {
-        // Автоматическое закрытие alert через 5 секунд
-        setTimeout(function() {
-            $(".alert").alert('close');
-        }, 5000); // 5000 миллисекунд = 5 секунд
-    });
-</script>
 </body>
 </html>

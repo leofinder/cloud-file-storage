@@ -15,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -41,7 +39,8 @@ public class DataController {
                          HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("errors", getErrors(bindingResult));
+            redirectAttributes.addFlashAttribute("validationErrors", getErrors(bindingResult));
+            redirectAttributes.addFlashAttribute("validationAlertTitle", "Error Occurred While Creating Folder");
             return redirectToRefererOrHome(request);
         }
 
@@ -57,7 +56,8 @@ public class DataController {
                          HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("errors", getErrors(bindingResult));
+            redirectAttributes.addFlashAttribute("validationErrors", getErrors(bindingResult));
+            redirectAttributes.addFlashAttribute("validationAlertTitle", "Error Occurred While Rename File / Folder");
             return redirectToRefererOrHome(request);
         }
 
@@ -68,7 +68,15 @@ public class DataController {
     @DeleteMapping
     public String delete(@AuthenticationPrincipal CustomUserDetails userDetails,
                          @Valid @ModelAttribute DataRequestDto dataRequestDto,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes,
                          HttpServletRequest request) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("validationErrors", getErrors(bindingResult));
+            redirectAttributes.addFlashAttribute("validationAlertTitle", "Error Occurred While Delete File / Folder");
+            return redirectToRefererOrHome(request);
+        }
 
         fileManagerService.delete(dataRequestDto, userDetails.getId());
         return redirectToRefererOrHome(request);

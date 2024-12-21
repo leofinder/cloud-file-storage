@@ -56,3 +56,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+setTimeout(() => {
+    const alert = document.querySelector('.alert');
+    if (alert) {
+        alert.classList.remove('show');
+        alert.addEventListener('transitionend', () => alert.remove());
+    }
+}, 5000);
