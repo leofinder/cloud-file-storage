@@ -10,7 +10,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form id="renameForm" th:action="@{/data/rename}" th:method="patch">
+            <form id="renameForm" th:action="@{/data/rename}" th:method="patch" onsubmit="disableSubmitButton(this)">
                 <div class="modal-body mb-3">
                     <label for="currentFileName" class="form-label">Current Name</label>
                     <input type="text" class="form-control" id="currentFileName" name="name" th:value="${param.name}" readonly />

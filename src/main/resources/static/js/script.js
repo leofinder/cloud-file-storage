@@ -63,3 +63,10 @@ setTimeout(() => {
         alert.addEventListener('transitionend', () => alert.remove());
     }
 }, 5000);
+
+function disableSubmitButton(form) {
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = 'Processing...';
+}
+

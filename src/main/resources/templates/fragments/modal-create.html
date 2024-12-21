@@ -9,7 +9,7 @@
                 <h5 class="modal-title" id="createFolderModalLabel">Create Folder</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="createFolderForm" th:action="@{/data}" method="post">
+            <form id="createFolderForm" th:action="@{/data}" method="post" onsubmit="disableSubmitButton(this)">
                 <div class="modal-body mb-3">
                     <label for="folderName" class="form-label">Folder Name</label>
                     <input type="hidden" name="parentPath" th:value="${#strings.isEmpty(param.path) ? '/' : param.path}"  />
