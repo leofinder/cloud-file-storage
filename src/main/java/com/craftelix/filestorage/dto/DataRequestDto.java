@@ -1,6 +1,7 @@
 package com.craftelix.filestorage.dto;
 
 import com.craftelix.filestorage.validation.ValidPath;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -13,11 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DataRequestDto {
 
-    @NotNull
+    @NotBlank(message = "The name cannot be blank.")
+    @Size(max = 255, message = "The name must not exceed 255 characters in length.")
     @Pattern(regexp = "^[^/\\\\:*?\"<>|]+$",
-            message = "The name must not contain: / \\ : * ? \" < > |.")
-    @Size(min = 1, max = 255,
-            message = "The name must be between 1 and 255 characters long.")
+            message = "The name must not contain: / \\ : * ? \" < > |")
     private String name;
 
     @ValidPath
