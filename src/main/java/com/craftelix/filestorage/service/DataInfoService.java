@@ -26,7 +26,7 @@ public class DataInfoService {
     private final UserService userService;
 
     public List<DataResponseDto> findByPath(String path, Long userId) {
-        if (!path.equals("/") && !isDataInfoExist(path, true, userId)) {
+        if (!path.equals("/") && isDataInfoNotExist(path, true, userId)) {
             throw new PathNotFoundException("The folder at path '" + path + "' was not found or is inaccessible for the user with ID " + userId + ".");
         }
 
@@ -92,13 +92,13 @@ public class DataInfoService {
     }
 
     private void saveIfNotExist(DataInfoDto dataInfoDto, Long userId) {
-        if (!isDataInfoExist(dataInfoDto.getPath(), dataInfoDto.getIsFolder(), userId)) {
+        if (isDataInfoNotExist(dataInfoDto.getPath(), dataInfoDto.getIsFolder(), userId)) {
             saveMetadata(dataInfoDto, userId);
         }
     }
 
-    private boolean isDataInfoExist(String path, boolean isFolder, Long userId) {
-        return dataInfoRepository.existsByPathAndIsFolderAndUserId(path, isFolder, userId);
+    private boolean isDataInfoNotExist(String path, boolean isFolder, Long userId) {
+        return !dataInfoRepository.existsByPathAndIsFolderAndUserId(path, isFolder, userId);
     }
 
 }
