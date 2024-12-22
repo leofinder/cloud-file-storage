@@ -135,7 +135,7 @@
         <span><i class="fa-solid fa-circle-exclamation icon-warning"></i></span>
         <div class="d-flex flex-column gap-1">
             <h6 class="mb-0">Partial Service Failure</h6>
-            <p class="mb-0" th:text="${warningMessage}">warning</p>
+            <p class="mb-0 preserve-whitespace" th:text="${warningMessage}">warning</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -149,7 +149,7 @@
         <span><i class="fa-solid fa-circle-exclamation icon-danger"></i></span>
         <div class="d-flex flex-column gap-1">
             <h6 class="mb-0">Operation Failed</h6>
-            <p class="mb-0" th:text="${errorMessage}">error</p>
+            <p class="mb-0 preserve-whitespace" th:text="${errorMessage}">error</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
