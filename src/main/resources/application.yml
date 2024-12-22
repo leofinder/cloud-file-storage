@@ -29,10 +29,9 @@ server:
 
 logging:
   level:
-#    root: "WARN"
-    org.springframework: "INFO"
-    org.hibernate: "ERROR"
-    com.craftelix: "DEBUG"
+    org.springframework: "WARN"
+    org.hibernate: "WARN"
+    com.craftelix: "INFO"
 
 minio:
   url: ${MINIO_HOST:http://localhost}:${MINIO_PORT_API:9000}
