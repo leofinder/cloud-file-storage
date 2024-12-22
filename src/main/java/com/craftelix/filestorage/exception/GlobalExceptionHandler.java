@@ -35,6 +35,14 @@ public class GlobalExceptionHandler {
         return "redirect:" + (referer != null ? referer : "/");
     }
 
+    @ExceptionHandler(MinioPathNotFoundException.class)
+    public String handleMinioPathNotFoundException(MinioPathNotFoundException ex, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        log.error(ex.getMessage(), ex);
+        redirectAttributes.addFlashAttribute("errorMessage", "Invalid data provided. Please check the input and try again.");
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/");
+    }
+
     @ExceptionHandler(MinioObjectAlreadyExistsException.class)
     public String handleMinioObjectAlreadyExistsException(MinioObjectAlreadyExistsException ex, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         log.error(ex.getMessage(), ex);

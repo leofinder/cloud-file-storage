@@ -6,7 +6,7 @@ import com.craftelix.filestorage.dto.DataRequestDto;
 import com.craftelix.filestorage.dto.DataStreamResponseDto;
 import com.craftelix.filestorage.exception.MinioObjectAlreadyExistsException;
 import com.craftelix.filestorage.exception.MinioObjectNotFoundException;
-import com.craftelix.filestorage.exception.PathNotFoundException;
+import com.craftelix.filestorage.exception.MinioPathNotFoundException;
 import com.craftelix.filestorage.util.PathUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -117,7 +117,7 @@ public class FileManagerService {
     private void validateParentPath(String path, Long userId) {
         String minioPath = PathUtil.getMinioPath(path, userId);
         if (!path.equals("/") && !isMinioPathExists(minioPath)) {
-            throw new PathNotFoundException("The folder at path '" + path + "' was not found or is inaccessible for the user with ID " + userId + ".");
+            throw new MinioPathNotFoundException("The folder at path '" + path + "' was not found or is inaccessible for the user with ID " + userId + ".");
         }
     }
 
