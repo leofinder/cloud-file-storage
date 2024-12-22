@@ -1,6 +1,6 @@
 package com.craftelix.filestorage.config;
 
-import com.craftelix.filestorage.service.props.MinioProperties;
+import com.craftelix.filestorage.config.properties.MinioProperties;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;

@@ -1,7 +1,7 @@
 package com.craftelix.filestorage.service;
 
 import com.craftelix.filestorage.exception.MinioServiceException;
-import com.craftelix.filestorage.service.props.MinioProperties;
+import com.craftelix.filestorage.config.properties.MinioProperties;
 import io.minio.*;
 import io.minio.messages.DeleteObject;
 import io.minio.messages.Item;
