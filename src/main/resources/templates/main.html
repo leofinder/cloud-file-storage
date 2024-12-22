@@ -12,6 +12,8 @@
 
 <div th:insert="~{fragments/modal-delete :: deleteModal}"></div>
 
+<div th:insert="~{fragments/modal-loading :: loadingModal}"></div>
+
 <main class="container my-4">
     <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
         <!--            TODO-->
@@ -45,7 +47,7 @@
                         </label>
                         <form id="uploadFilesForm" th:action="@{/data/upload/files}" th:method="post" enctype="multipart/form-data" style="display: none;">
                             <input type="hidden" name="parentPath" th:value="${#strings.isEmpty(param.path) ? '/' : param.path}" />
-                            <input type="file" id="uploadFilesInput" name="files" multiple required>
+                            <input type="file" id="uploadFilesInput" name="files" multiple required onchange="showLoadingModal()">
                         </form>
                     </li>
                     <!-- Upload Folders -->
@@ -55,7 +57,7 @@
                         </label>
                         <form id="uploadFoldersForm" th:action="@{/data/upload/folder}" th:method="post" enctype="multipart/form-data" style="display: none;">
                             <input type="hidden" name="parentPath" th:value="${#strings.isEmpty(param.path) ? '/' : param.path}" />
-                            <input type="file" id="uploadFoldersInput" name="folderFiles" webkitdirectory multiple required>
+                            <input type="file" id="uploadFoldersInput" name="folderFiles" webkitdirectory multiple required onchange="showLoadingModal()">
                         </form>
                     </li>
                 </ul>

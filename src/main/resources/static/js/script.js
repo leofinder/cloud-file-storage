@@ -70,3 +70,7 @@ function disableSubmitButton(form) {
     submitButton.textContent = 'Processing...';
 }
 
+function showLoadingModal() {
+    const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    loadingModal.show();
+}
