@@ -1,9 +1,8 @@
 package com.craftelix.filestorage.service;
 
-import com.craftelix.filestorage.exception.MinioServiceException;
 import com.craftelix.filestorage.config.properties.MinioProperties;
+import com.craftelix.filestorage.exception.MinioServiceException;
 import io.minio.*;
-import io.minio.messages.DeleteObject;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -13,8 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -74,12 +71,9 @@ public class MinioService {
         try {
             Iterable<Result<Item>> objects = getListObjects(path);
 
-            List<DeleteObject> deleteObjects = new ArrayList<>();
             for (Result<Item> result : objects) {
-                deleteObjects.add(new DeleteObject(result.get().objectName()));
+                removeObject(result.get().objectName());
             }
-
-            removeObjects(deleteObjects);
         } catch (Exception e) {
             throw new MinioServiceException("Failed to delete objects in MinIO. Folder path: " + path, e);
         }
@@ -171,15 +165,6 @@ public class MinioService {
                 RemoveObjectArgs.builder()
                         .bucket(minioProperties.getBucket())
                         .object(objectName)
-                        .build()
-        );
-    }
-
-    private void removeObjects(List<DeleteObject> deleteObjects) {
-        minioClient.removeObjects(
-                RemoveObjectsArgs.builder()
-                        .bucket(minioProperties.getBucket())
-                        .objects(deleteObjects)
                         .build()
         );
     }
