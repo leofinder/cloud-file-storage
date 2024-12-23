@@ -3,6 +3,7 @@ package com.craftelix.filestorage.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -13,7 +14,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
