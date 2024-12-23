@@ -105,7 +105,7 @@ public class FileManagerService {
 
         if (dataRequestDto.getIsFolder()) {
             dataStreamResponseDto.setFilename(filename + ".zip");
-            dataStreamResponseDto.setResource(minioService.getFolderAsZipStream(minioPath));
+            dataStreamResponseDto.setResource(minioService.getFolderAsZipStream(minioPath, filename));
         } else {
             dataStreamResponseDto.setFilename(filename);
             dataStreamResponseDto.setResource(minioService.getFileAsStream(minioPath));

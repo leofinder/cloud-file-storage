@@ -95,7 +95,7 @@ public class MinioService {
         }
     }
 
-    public InputStreamResource getFolderAsZipStream(String path) {
+    public InputStreamResource getFolderAsZipStream(String path, String filename) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try (ZipOutputStream zos = new ZipOutputStream(byteArrayOutputStream)) {
             Iterable<Result<Item>> objects = getListObjects(path);
@@ -106,7 +106,7 @@ public class MinioService {
                 ByteArrayOutputStream fileContentStream = new ByteArrayOutputStream();
                 getObject(objectName).transferTo(fileContentStream);
 
-                zos.putNextEntry(new ZipEntry(objectName.replace(path, "")));
+                zos.putNextEntry(new ZipEntry(objectName.replace(path, filename + "/")));
                 zos.write(fileContentStream.toByteArray());
                 zos.closeEntry();
             }
