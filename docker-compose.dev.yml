@@ -24,7 +24,7 @@ services:
       - "${MINIO_PORT_API}:9000"
       - "${MINIO_PORT_CONSOLE}:9001"
     volumes:
-      - minio_data:/data
+      - minio_data_dev:/data
     env_file:
       - ./.env
     healthcheck:
@@ -41,7 +41,7 @@ services:
     ports:
       - "${REDIS_PORT}:6379"
     volumes:
-      - redis_data:/data
+      - redis_data_dev:/data
     env_file:
       - ./.env
     command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
@@ -54,7 +54,7 @@ services:
 volumes:
   postgres_data_dev:
     driver: local
-  minio_data:
+  minio_data_dev:
     driver: local
-  redis_data:
+  redis_data_dev:
     driver: local
