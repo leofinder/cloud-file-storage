@@ -1,0 +1,75 @@
+services:
+  app:
+    container_name: cloud_file_storage_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:8080"
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+      - minio
+    restart: always
+
+  db:
+    image: postgres:16.4
+    container_name: cloud_postgres_db
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  minio:
+    image: minio/minio:RELEASE.2024-11-07T00-52-20Z
+    container_name: cloud_minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    ports:
+      - "${MINIO_PORT_API}:9000"
+      - "${MINIO_PORT_CONSOLE}:9001"
+    volumes:
+      - minio_data:/data
+    env_file:
+      - ./.env
+    healthcheck:
+      test: timeout 5s bash -c ':> /dev/tcp/127.0.0.1/9000' || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 1
+      start_period: 5s
+
+  redis:
+    image: redis:7.4
+    container_name: cloud_redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - redis_data:/data
+    env_file:
+      - ./.env
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+  minio_data:
+    driver: local
+  redis_data:
+    driver: local
