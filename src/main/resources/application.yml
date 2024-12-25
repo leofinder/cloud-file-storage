@@ -53,3 +53,8 @@ management:
         include: health, info, prometheus
     prometheus:
       enabled: true
+
+app:
+  user:
+    name: ${DEFAULT_ADMIN_NAME:admin}
+    password: ${DEFAULT_PASSWORD_NAME:pass123}
