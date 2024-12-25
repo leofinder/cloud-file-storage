@@ -43,7 +43,6 @@ public class UserService implements UserDetailsService {
         try {
             userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
-            // TODO: добавить обработку исключения ConstraintViolationException
             throw new UserAlreadyExistException(String.format("User %s already exists", userSignupDto.getUsername()), e);
         }
     }
