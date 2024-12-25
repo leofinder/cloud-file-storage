@@ -1,6 +1,6 @@
 package com.craftelix.filestorage.validation;
 
-import com.craftelix.filestorage.dto.user.UserSignupDto;
+import com.craftelix.filestorage.dto.UserSignupDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

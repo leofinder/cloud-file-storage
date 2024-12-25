@@ -1,4 +1,4 @@
-package com.craftelix.filestorage.dto.user;
+package com.craftelix.filestorage.dto;
 
 import com.craftelix.filestorage.validation.PasswordMatches;
 import jakarta.validation.constraints.Pattern;

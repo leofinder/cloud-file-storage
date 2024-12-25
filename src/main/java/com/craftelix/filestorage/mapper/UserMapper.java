@@ -1,6 +1,6 @@
 package com.craftelix.filestorage.mapper;
 
-import com.craftelix.filestorage.dto.user.UserSignupDto;
+import com.craftelix.filestorage.dto.UserSignupDto;
 import com.craftelix.filestorage.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

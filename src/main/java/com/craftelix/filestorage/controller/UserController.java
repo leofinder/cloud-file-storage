@@ -1,6 +1,6 @@
 package com.craftelix.filestorage.controller;
 
-import com.craftelix.filestorage.dto.user.UserSignupDto;
+import com.craftelix.filestorage.dto.UserSignupDto;
 import com.craftelix.filestorage.exception.UserAlreadyExistException;
 import com.craftelix.filestorage.service.UserService;
 import jakarta.validation.Valid;

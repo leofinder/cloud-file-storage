@@ -1,6 +1,6 @@
 package com.craftelix.filestorage.service;
 
-import com.craftelix.filestorage.dto.user.UserSignupDto;
+import com.craftelix.filestorage.dto.UserSignupDto;
 import com.craftelix.filestorage.entity.Role;
 import com.craftelix.filestorage.entity.User;
 import com.craftelix.filestorage.exception.UserAlreadyExistException;
