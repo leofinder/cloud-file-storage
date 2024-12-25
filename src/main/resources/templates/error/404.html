@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: commonHead(pageTitle='404 - Page Not Found')}"></head>
+<body>
+
+<div class="container">
+    <div class="d-flex flex-column align-items-center" style="min-height: 100vh;">
+        <div class="app-header text-center mt-5 mb-4">
+            <h1>Oops! Page Not Found</h1>
+        </div>
+        <div class="error-container text-center">
+            <p class="mb-2">We're sorry, but the page you were looking for doesn't exist.</p>
+        </div>
+        <div class="text-center mt-2 mb-5">
+            <p>Return to the <a th:href="@{/}" class="text-decoration-none">homepage</a> or explore our site.</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

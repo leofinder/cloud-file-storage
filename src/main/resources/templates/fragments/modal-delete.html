@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="deleteModal" class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="deleteForm" th:action="@{/data}" th:method="delete" onsubmit="disableSubmitButton(this)">
+                <div class="modal-body mb-3">
+                    <p>
+                        Are you sure you want to delete
+                        <strong>this item</strong>?
+                    </p>
+                    <p>This action cannot be undone.</p>
+                    <input type="hidden" name="name" th:value="${param.name}" />
+                    <input type="hidden" name="parentPath" th:value="${#strings.isEmpty(param.path) ? '/' : param.path}"  />
+                    <input type="hidden" name="isFolder" th:value="${param.isFolder}" />
+                </div>
+                <div class="modal-footer bg-light w-100 m-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
