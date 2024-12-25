@@ -27,24 +27,21 @@
     text-decoration: underline;
 }
 
-
-/*стили для кнопок*/
 .dropdown-item {
-    color: #333; /* Цвет текста по умолчанию */
+    color: #333;
 }
 
 .dropdown-item:hover,
 .dropdown-item:focus,
 .dropdown-item:active {
-    background-color: #e9ecef !important; /* Светло-серый фон */
-    color: #333 !important; /* Сохраняем текст темного цвета */
+    background-color: #e9ecef !important;
+    color: #333 !important;
 }
 
 .dropdown-item i {
-    color: #6c757d; /* Цвет иконки */
+    color: #6c757d;
 }
 
-/* Пользовательские стили для таблицы без вертикальных границ */
 .no-vertical-borders td,
 .no-vertical-borders th {
     border-left: none !important;
@@ -69,53 +66,46 @@ table tbody tr:last-child td {
     border-bottom: none;
 }
 
-.no-vertical-borders {
-    /*border: 1px solid #dee2e6;*/
-}
-
 .folder-link {
-    color: inherit; /* Наследуем цвет текста родителя */
-    text-decoration: none; /* Убираем подчеркивание */
-    font-weight: inherit; /* Наследуем толщину текста */
+    color: inherit;
+    text-decoration: none;
+    font-weight: inherit;
 }
 
 .folder-link:hover {
-    text-decoration: underline; /* Подчеркивание при наведении */
-    color: inherit; /* Цвет остаётся таким же, как у текста */
+    text-decoration: underline;
+    color: inherit;
 }
 
 .icon-button {
-    padding: 0; /* Убирает внутренние отступы */
-    margin-right: 8px; /* Уменьшает отступ между кнопками */
-    /*line-height: 1; !* Устраняет дополнительные вертикальные отступы *!*/
-    border: none; /* Убирает рамки, если они есть */
-    background: none; /* Убирает фон */
+    padding: 0;
+    margin-right: 8px;
+    border: none;
+    background: none;
 }
 
 .text-soft-edit {
-    color: #6c757d; /* Нейтральный серый цвет */
+    color: #6c757d;
 }
 
 .text-soft-edit:hover {
-    color: #495057; /* Темнее при наведении */
+    color: #495057;
 }
 
-/* Кнопка скачивания - мягкий синий */
 .text-soft-download {
-    color: #6c757d; /* Нейтральный серый цвет */
+    color: #6c757d;
 }
 
 .text-soft-download:hover {
-    color: #495057; /* Темнее при наведении */
+    color: #495057;
 }
 
 .text-soft-danger {
-    color: #6c757d; /* Нейтральный серый цвет */
-    /*color: #ff6b6b; !* Мягкий красный цвет *!*/
+    color: #6c757d;
 }
 
 .text-soft-danger:hover {
-    color: #ff4c4c; /* Немного темнее при наведении */
+    color: #ff4c4c;
 }
 
 .text-soft-goto {
@@ -126,30 +116,15 @@ table tbody tr:last-child td {
     color: #495057;
 }
 
-
-/* Пример закруглённых углов */
 .rounded-table-container {
     border-radius: 8px;
     overflow: hidden;
-    border: 1px solid #dee2e6; /* Цвет рамки */
-    /*background-color: #dee2e6; !* Цвет углов *!*/
+    border: 1px solid #dee2e6;
 }
-
-/*.table th:nth-child(2),*/
-/*.table td:nth-child(2) {*/
-/*    width: 100px; !* Ширина второй колонки *!*/
-/*}*/
-
-/*!* Третья колонка *!*/
-/*.table th:nth-child(3),*/
-/*.table td:nth-child(3) {*/
-/*    width: 150px; !* Ширина третьей колонки *!*/
-/*}*/
 
 @media (max-width: 576px) {
     th.actions-col {
         width: 30%;
-        /* Задайте нужный процент или фиксированный размер */
     }
 }
 
@@ -186,5 +161,3 @@ table tbody tr:last-child td {
 .slide-out {
     animation: slideOut 0.5s ease-out;
 }
-
-

@@ -16,7 +16,6 @@
 
 <main class="container my-4">
     <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
-        <!--            TODO-->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb custom-breadcrumb mt-3">
                 <li class="breadcrumb-item">
@@ -25,7 +24,6 @@
                     </a>
                 </li>
                 <li th:each="breadcrumb, iterStat : ${breadcrumbs}" th:class="${iterStat.last} ? 'breadcrumb-item active' : 'breadcrumb-item'">
-                    <!--                            <span th:if="${breadcrumb.name != null}"> > </span>-->
                     <a th:href="@{/(path=${breadcrumb.path})}"
                        th:text="${breadcrumb.name}"
                        th:class="${iterStat.last} ? 'link-body-emphasis fw-semibold text-decoration-none' : ''"> uri
@@ -40,7 +38,6 @@
                     Add File
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="addFileDropdown">
-                    <!-- Upload Files -->
                     <li>
                         <label class="dropdown-item d-flex align-items-center" for="uploadFilesInput">
                             <i class="fas fa-upload me-2"></i> Upload Files
@@ -50,7 +47,6 @@
                             <input type="file" id="uploadFilesInput" name="files" multiple required onchange="showLoadingModal()">
                         </form>
                     </li>
-                    <!-- Upload Folders -->
                     <li>
                         <label class="dropdown-item d-flex align-items-center" for="uploadFoldersInput">
                             <i class="fas fa-folder-open me-2"></i> Upload Folders
@@ -174,7 +170,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!--<script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/js/all.min.js"></script>-->
 <script th:src="@{/js/script.js}"></script>
 <script th:src="@{/js/search.js}"></script>
 </body>
