@@ -20,7 +20,9 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Slf4j
@@ -107,9 +109,9 @@ public class DataController {
                                                             @Valid @ModelAttribute DataRequestDto dataRequestDto) {
 
         DataStreamResponseDto dataStreamResponseDto = fileManagerService.download(dataRequestDto, userDetails.getId());
-
+        String filename = UriUtils.encode(dataStreamResponseDto.getFilename(), StandardCharsets.UTF_8);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + dataStreamResponseDto.getFilename())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + filename)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(dataStreamResponseDto.getResource());
     }
