@@ -26,7 +26,7 @@ public class FileManagerService {
         String path = PathUtil.getFullPath(dataRequestDto.getParentPath(), dataRequestDto.getName(), true);
         String minioPath = PathUtil.getMinioPath(path, userId);
 
-        validateObjectNotExists(minioPath, dataRequestDto.getName(), dataRequestDto.getParentPath());
+        validateObjectNotExists(minioPath, dataRequestDto.getName(), dataRequestDto.getParentPath(), true);
 
         minioService.createFolder(minioPath);
 
@@ -43,7 +43,7 @@ public class FileManagerService {
             String path = PathUtil.getFullPath(parentPath, filename, false);
             String minioPath = PathUtil.getMinioPath(path, userId);
 
-            validateObjectNotExists(minioPath, PathUtil.getFilename(path), PathUtil.getParentPath(path));
+            validateObjectNotExists(minioPath, PathUtil.getFilename(path), PathUtil.getParentPath(path), false);
 
             minioService.uploadFile(minioPath, file);
 
@@ -63,8 +63,8 @@ public class FileManagerService {
         String minioOldPath = PathUtil.getMinioPath(oldPath, userId);
         String minioNewPath = PathUtil.getMinioPath(newPath, userId);
 
-        validateObjectExists(minioOldPath, dataRenameRequestDto.getName(), dataRenameRequestDto.getParentPath());
-        validateObjectNotExists(minioNewPath, dataRenameRequestDto.getNewName(), dataRenameRequestDto.getParentPath());
+        validateObjectExists(minioOldPath, dataRenameRequestDto.getName(), dataRenameRequestDto.getParentPath(), dataRenameRequestDto.getIsFolder());
+        validateObjectNotExists(minioNewPath, dataRenameRequestDto.getNewName(), dataRenameRequestDto.getParentPath(), dataRenameRequestDto.getIsFolder());
 
         if (dataRenameRequestDto.getIsFolder()) {
             minioService.renameFolder(minioOldPath, minioNewPath);
@@ -81,7 +81,7 @@ public class FileManagerService {
         String path = PathUtil.getFullPath(dataRequestDto.getParentPath(), dataRequestDto.getName(), dataRequestDto.getIsFolder());
         String minioPath = PathUtil.getMinioPath(path, userId);
 
-        validateObjectExists(minioPath, dataRequestDto.getName(), dataRequestDto.getParentPath());
+        validateObjectExists(minioPath, dataRequestDto.getName(), dataRequestDto.getParentPath(), dataRequestDto.getIsFolder());
 
         if (dataRequestDto.getIsFolder()) {
             minioService.deleteFolder(minioPath);
@@ -99,7 +99,7 @@ public class FileManagerService {
         String path = PathUtil.getFullPath(dataRequestDto.getParentPath(), dataRequestDto.getName(), dataRequestDto.getIsFolder());
         String minioPath = PathUtil.getMinioPath(path, userId);
 
-        validateObjectExists(minioPath, filename, dataRequestDto.getParentPath());
+        validateObjectExists(minioPath, filename, dataRequestDto.getParentPath(), dataRequestDto.getIsFolder());
 
         DataStreamResponseDto dataStreamResponseDto = new DataStreamResponseDto();
 
@@ -116,25 +116,25 @@ public class FileManagerService {
 
     private void validateParentPath(String path, Long userId) {
         String minioPath = PathUtil.getMinioPath(path, userId);
-        if (!path.equals("/") && !isMinioPathExists(minioPath)) {
+        if (!path.equals("/") && !isMinioPathExists(minioPath, true)) {
             throw new MinioPathNotFoundException("The folder at path '" + path + "' was not found or is inaccessible for the user with ID " + userId + ".");
         }
     }
 
-    private void validateObjectExists(String minioPath, String name, String parentPath) {
-        if (!isMinioPathExists(minioPath)) {
+    private void validateObjectExists(String minioPath, String name, String parentPath, boolean isFolder) {
+        if (!isMinioPathExists(minioPath, isFolder)) {
             throw new MinioObjectNotFoundException("Object '" + name + "' not found at '" + parentPath + "'");
         }
     }
 
-    private void validateObjectNotExists(String minioPath, String name, String parentPath) {
-        if (isMinioPathExists(minioPath)) {
+    private void validateObjectNotExists(String minioPath, String name, String parentPath, boolean isFolder) {
+        if (isMinioPathExists(minioPath, isFolder)) {
             throw new MinioObjectAlreadyExistsException("Object '" + name + "' already exists at '" + parentPath + "'");
         }
     }
 
-    private boolean isMinioPathExists(String path) {
-        return minioService.isObjectExist(path) || minioService.isPrefixExist(path);
+    private boolean isMinioPathExists(String path, boolean isFolder) {
+        return isFolder ? minioService.isPrefixExist(path) : minioService.isObjectExist(path);
     }
 
 }

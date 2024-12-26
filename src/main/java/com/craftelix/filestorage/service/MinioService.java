@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -48,7 +49,7 @@ public class MinioService {
             for (Result<Item> result : objects) {
                 Item item = result.get();
                 String oldObjectName = item.objectName();
-                String newObjectName = oldObjectName.replaceFirst(oldPrefix, newPrefix);
+                String newObjectName = oldObjectName.replaceFirst(Pattern.quote(oldPrefix), newPrefix);
 
                 copyObject(oldObjectName, newObjectName);
                 removeObject(oldObjectName);
