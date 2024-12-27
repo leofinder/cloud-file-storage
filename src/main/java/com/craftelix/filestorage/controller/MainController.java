@@ -33,8 +33,9 @@ public class MainController {
                                  @RequestParam(name = "query") String name,
                                  Model model) {
 
-        model.addAttribute("query", name);
-        model.addAttribute("searchInfoList", dataInfoService.findByName(name, userDetails.getId()));
+        String trimmedName = name == null ? "" : name.trim();
+        model.addAttribute("query", trimmedName);
+        model.addAttribute("searchInfoList", dataInfoService.findByName(trimmedName, userDetails.getId()));
         return "search";
     }
 }
