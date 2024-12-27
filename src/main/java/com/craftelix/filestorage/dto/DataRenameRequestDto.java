@@ -16,14 +16,14 @@ public class DataRenameRequestDto {
 
     @NotBlank(message = "The name cannot be blank.")
     @Size(max = 255, message = "The name must not exceed 255 characters in length.")
-    @Pattern(regexp = "^[^/\\\\:*?\"<>|]+$",
-            message = "The name must not contain: / \\ : * ? \" < > |")
+    @Pattern(regexp = "^[^/\\\\:*?\"<>|]+$", message = "The name must not contain: / \\ : * ? \" < > |")
+    @Pattern(regexp = "^(?!\\.+$).*", message = "The name cannot consist only of dots.")
     private String name;
 
     @NotBlank(message = "The new name cannot be blank.")
     @Size(max = 255, message = "The new name must not exceed 255 characters in length.")
-    @Pattern(regexp = "^[^/\\\\:*?\"<>|]+$",
-            message = "The new name must not contain: / \\ : * ? \" < > |")
+    @Pattern(regexp = "^[^/\\\\:*?\"<>|]+$", message = "The new name must not contain: / \\ : * ? \" < > |")
+    @Pattern(regexp = "^(?!\\.+$).*", message = "The new name cannot consist only of dots.")
     private String newName;
 
     @ValidPath
