@@ -44,7 +44,7 @@
                         </label>
                         <form id="uploadFilesForm" th:action="@{/data/upload/files}" th:method="post" enctype="multipart/form-data" style="display: none;">
                             <input type="hidden" name="parentPath" th:value="${#strings.isEmpty(param.path) ? '/' : param.path}" />
-                            <input type="file" id="uploadFilesInput" name="files" multiple required onchange="showLoadingModal()">
+                            <input type="file" id="uploadFilesInput" name="files" multiple required >
                         </form>
                     </li>
                     <li>
@@ -53,7 +53,7 @@
                         </label>
                         <form id="uploadFoldersForm" th:action="@{/data/upload/folder}" th:method="post" enctype="multipart/form-data" style="display: none;">
                             <input type="hidden" name="parentPath" th:value="${#strings.isEmpty(param.path) ? '/' : param.path}" />
-                            <input type="file" id="uploadFoldersInput" name="folderFiles" webkitdirectory multiple required onchange="showLoadingModal()">
+                            <input type="file" id="uploadFoldersInput" name="folderFiles" webkitdirectory multiple required >
                         </form>
                     </li>
                 </ul>
