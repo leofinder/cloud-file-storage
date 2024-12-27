@@ -35,13 +35,16 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/css/**",
                                 "/js/**",
-                                "/images/**",
-                                "/signup"
+                                "/images/**"
                         ).permitAll()
                         .requestMatchers(
                                 "/actuator/**"
                         )
                         .hasAuthority(Role.ROLE_ADMIN.name())
+                        .requestMatchers(
+                                "/signup",
+                                "/signout"
+                        ).anonymous()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
