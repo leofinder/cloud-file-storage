@@ -58,4 +58,4 @@ management:
 app:
   user:
     name: ${DEFAULT_ADMIN_NAME:admin}
-    password: ${DEFAULT_PASSWORD_NAME:pass123}
+    password: ${DEFAULT_ADMIN_PASSWORD:pass123}
