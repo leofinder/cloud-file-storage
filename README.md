@@ -2,6 +2,11 @@
 
 Cloud File Storage is a Java-based web application for managing file storage in the cloud. It provides an intuitive interface for uploading, downloading, and organizing files while utilizing popular storage and database solutions.
 
+![Снимок экрана 2024-12-27 в 17 34 04](https://github.com/user-attachments/assets/5ee0d842-4af5-4bc8-b7d9-e9315b9eb547)
+
+![Снимок экрана 2024-12-27 в 17 34 43](https://github.com/user-attachments/assets/de7ed2a5-0b2b-42bf-9f50-0622e562025c)
+
+
 ## Features
 
 - **File Management**: Upload, download, and organize files in the cloud.
