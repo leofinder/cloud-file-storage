@@ -1,9 +1,12 @@
-FROM maven:3.8.5-openjdk-17 AS build
+FROM openjdk:17-jdk-slim AS build
 WORKDIR /app
+COPY mvnw ./
+COPY .mvn ./.mvn
+RUN chmod +x ./mvnw
 COPY pom.xml ./
-RUN mvn dependency:go-offline -B
+RUN ./mvnw dependency:go-offline -B
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN ./mvnw clean package -DskipTests
 
 FROM openjdk:17-jdk-slim
 WORKDIR /app
