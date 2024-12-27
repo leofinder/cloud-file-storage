@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -86,9 +87,17 @@ public class DataController {
 
     @PostMapping("/upload/files")
     public String handleFilesUpload(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                   @RequestParam("files") MultipartFile[] files,
-                                   @RequestParam("parentPath") String parentPath,
-                                   HttpServletRequest request) {
+                                    @RequestParam("files") MultipartFile[] files,
+                                    @RequestParam("parentPath") String parentPath,
+                                    RedirectAttributes redirectAttributes,
+                                    HttpServletRequest request) {
+
+        if (areFilesNotValid(files)) {
+            String validationError = "File validation failed: ensure file have valid name, are not empty, and meet size requirements.";
+            redirectAttributes.addFlashAttribute("validationErrors", Collections.singletonList(validationError));
+            redirectAttributes.addFlashAttribute("validationAlertTitle", "Error Occurred While Upload Files");
+            return redirectToRefererOrHome(request);
+        }
 
         fileManagerService.uploadFiles(files, parentPath, userDetails.getId());
         return redirectToRefererOrHome(request);
@@ -96,9 +105,17 @@ public class DataController {
 
     @PostMapping("/upload/folder")
     public String handleFolderUpload(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                   @RequestParam("folderFiles") MultipartFile[] files,
-                                   @RequestParam("parentPath") String parentPath,
-                                   HttpServletRequest request) {
+                                     @RequestParam("folderFiles") MultipartFile[] files,
+                                     @RequestParam("parentPath") String parentPath,
+                                     RedirectAttributes redirectAttributes,
+                                     HttpServletRequest request) {
+
+        if (areFilesNotValid(files)) {
+            String validationError = "Files validation failed: ensure all files have valid names, are not empty, and meet size requirements.";
+            redirectAttributes.addFlashAttribute("validationErrors", Collections.singletonList(validationError));
+            redirectAttributes.addFlashAttribute("validationAlertTitle", "Error Occurred While Upload Folder");
+            return redirectToRefererOrHome(request);
+        }
 
         fileManagerService.uploadFiles(files, parentPath, userDetails.getId());
         return redirectToRefererOrHome(request);
@@ -114,6 +131,19 @@ public class DataController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + filename)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(dataStreamResponseDto.getResource());
+    }
+
+    private boolean areFilesNotValid(MultipartFile[] files) {
+        if (files == null || files.length == 0) {
+            return true;
+        }
+
+        for (MultipartFile file : files) {
+            if (file.getOriginalFilename() == null || file.getOriginalFilename().trim().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String redirectToRefererOrHome(HttpServletRequest request) {
