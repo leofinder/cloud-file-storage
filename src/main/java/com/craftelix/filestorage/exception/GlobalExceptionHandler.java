@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handlePathNotFoundException(PathNotFoundException ex) {
         log.error(ex.getMessage(), ex);
-        return "/error/404";
+        return "error/404";
     }
 
     @ExceptionHandler(MinioObjectNotFoundException.class)
@@ -92,7 +92,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleRuntimeExceptions(RuntimeException ex) {
         log.error("HTTP Response Code: {}. {}", HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
-        return "/error/500";
+        return "error/500";
     }
 
 }
