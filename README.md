@@ -36,6 +36,15 @@ cd cloud-file-storage
     ```
 - Edit `.env` and replace the placeholders with your specific settings (e.g., database credentials, Redis password, MinIO keys).
 
+- Ensure the `.env` file includes the following default administrator credentials:
+    ```
+    DEFAULT_ADMIN_NAME=admin
+    DEFAULT_ADMIN_PASSWORD=pass123
+    ```
+  This user has access to the following endpoints:
+    - `/actuator`
+    - `/actuator/prometheus`
+
 ### Development Environment
 
 1. Start the services with the development configuration:
